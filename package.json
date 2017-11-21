@@ -1,0 +1,27 @@
+{
+  "name": "townly",
+  "version": "1.0.0",
+  "description": "This is a simple application for asking in a conference.",
+  "main": "townApp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devjohnny/Townly.git"
+  },
+  "author": "Andras Jani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devjohnny/Townly/issues"
+  },
+  "homepage": "https://github.com/devjohnny/Townly#readme",
+  "dependencies": {
+    "angular": "^1.6.6",
+    "angular-animate": "^1.6.6",
+    "angular-aria": "^1.6.6",
+    "angular-material": "^1.1.5",
+    "angular-messages": "^1.6.6",
+    "angular-ui-bootstrap": "^2.5.6"
+  }
+}
