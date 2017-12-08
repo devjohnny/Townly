@@ -2,12 +2,12 @@
     padding-top: 70px;
     padding-bottom: 20px;
     font-family: 'Roboto', sans-serif;
-    background-image: url('pictures/pinkdust.png');
+    background-image: url('../images/pinkdust.png');
     background-repeat: repeat;
 }
 
 .row-body {
-    background-image: url('pictures/pinkdust.png');
+    background-image: url('../images/pinkdust.png');
     background-repeat: repeat;
 }
 
