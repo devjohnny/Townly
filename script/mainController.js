@@ -1,15 +1,16 @@
-﻿app.controller("mainController", function ($scope, $q, $timeout) {
+﻿app.controller("mainController", function ($scope, $http, $q, $timeout) {
 
-    function Event(eventId, name, description, fromDate, toDate, isPublic, isModerated, createdDate, publicEventId) {
+
+    function Event(eventId, name, description, from, to, public, moderated, createdBy, barcode) {
         this.eventId = eventId;
         this.name = name;
         this.description = description;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
-        this.isPublic = isPublic;
-        this.isModerated = isModerated;
-        this.createdDate = createdDate;
-        this.publicEventId = publicEventId;
+        this.from = from;
+        this.to = to;
+        this.public = public;
+        this.moderated = moderated;
+        this.createdBy = createdBy;
+        this.barcode = barcode;
     }
 
     function Question(questionId, questionText, isModerated, createdBy, createdDate, event, likeCount, liked) {
@@ -72,30 +73,30 @@
 
     function getPublicEvents() {
         //httprequest
-        return [event1, event2, event3, event4, event5, event6];
+
+        var url = "http://localhost:64224/api/Event/Events";
+
+
+        //console.log("query: " + url + query);
+        $http.get(url)
+            .then(function (response) { return response.data; });
+
+        //return [event1, event2, event3, event4, event5, event6];
     }
 
     function getQuestions(eventIndex) {
         var eventId = $scope.events[eventIndex].eventId;
 
-        //httprequest
-        //var selectedQuestions = questions.filter(function (item) {
-        //    return item.event.eventId == eventId;
-        //});
-
-        //$scope.questions2 = $scope.questions2.concat(selectedQuestions);
         $scope.questions = [question1, question2, question3, question4];
 
         $scope.questionsHidden = false;
     }
 
-    //$scope.itemList = [{ value: "valami", display: "valami" }, { value: "valami2", display: "valami2" }, { value: "alma", display: "alma" }];    
     $scope.itemList = [{ value: event1, display: event1.name }, { value: event2, display: event2.name }, { value: event3, display: event3.name }, { value: event4, display: event4.name }, { value: event5, display: event5.name }, { value: event6, display: event6.name }];
 
     $scope.simulateQuery = true;
     $scope.isDisabled = false;
-
-    // list of `state` value/display objects
+    
     $scope.states = loadAll();
     $scope.querySearch = querySearch;
     $scope.selectedItemChange = selectedItemChange;
@@ -109,7 +110,6 @@
 
 
     function querySearch(query) {
-        console.log("query: " + query);
         var results = query ? $scope.states.filter(createFilterFor(query)) : $scope.states,
             deferred;
         if ($scope.simulateQuery) {
@@ -147,12 +147,6 @@
               Wisconsin, Wyoming';
 
         return $scope.itemList;
-        //allStates.split(/, +/g).map(function (state) {
-        //    return {
-        //        value: state.toLowerCase(),
-        //        display: state
-        //    };
-        //});
     }
 
     function createFilterFor(query) {
