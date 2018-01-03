@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Townly App</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -9,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/font-awesome/css/font-awesome.min.css">
 
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="node_modules/angular/angular.js"></script>    
+    <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-material/angular-material.js"></script>
     <script src="node_modules/angular-animate/angular-animate.js"></script>
     <script src="node_modules/angular-aria/angular-aria.js"></script>
@@ -18,6 +19,7 @@
     <script src="script/townApp.js"></script>
     <script src="script/mainController.js"></script>
 </head>
+
 <body ng-app="townApp">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -30,35 +32,34 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#Home"><i class="fa fa-home"></i> Home</a></li>
-                    <li><a href="#contact"><i class="fa fa-shield"></i> About</a></li>
+                    <li>
+                        <a href="#Home">
+                            <i class="fa fa-home"></i> Home</a>
+                    </li>
+                    <li>
+                        <a href="#contact">
+                            <i class="fa fa-shield"></i> About</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>    
+    </div>
     <div class="container-fluid">
         <div class="row row-body">
             <div class="col-md-3">
                 Sidebar left content
             </div>
             <div class="col-md-7">
-               
+
                 <div ng-controller="mainController">
                     <br />
                     <br />
                     <div class="row">
                         <md-content class="md-padding">
-                            <form ng-submit="$event.preventDefault()">                
-                                <md-autocomplete ng-disabled="isDisabled"
-                                                 md-no-cache="true"
-                                                 md-selected-item="selectedItem"
-                                                 md-search-text-change="searchTextChange(searchText)"
-                                                 md-search-text="searchText"
-                                                 md-selected-item-change="selectedItemChange(item)"
-                                                 md-items="item in querySearch(searchText)"
-                                                 md-item-text="item.display"
-                                                 md-min-length="0"
-                                                 placeholder="What is the event id?">
+                            <form ng-submit="$event.preventDefault()">
+                                <md-autocomplete ng-disabled="isDisabled" md-no-cache="true" md-selected-item="selectedItem" md-search-text-change="searchTextChange(searchText)"
+                                    md-search-text="searchText" md-selected-item-change="selectedItemChange(item)" md-items="item in querySearch(searchText)"
+                                    md-item-text="item.display" md-min-length="0" placeholder="What is the event id?">
                                     <md-item-template>
                                         <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
                                     </md-item-template>
@@ -71,31 +72,31 @@
                             </form>
                         </md-content>
                     </div>
-                
+
                     <div ng-hide="eventsHidden">
                         <div class="row" ng-repeat="event in events">
                             <div class="well well-lg">
                                 <div class="event-lead">Event: {{event.name}}</div>
-                                <p><i class="fa fa-lg fa-calendar" aria-hidden="true"></i> {{event.fromDate}}</p>
+                                <p>
+                                    <i class="fa fa-lg fa-calendar" aria-hidden="true"></i> {{event.from}} - {{event.to}}</p>
                                 <h2>{{event.description}}</h2>
-                                <h3>Event id: {{event.publicEventId}}</h3>
-                                <button ng-click="openEvent($index)"
-                                        class="btn btn-primary btn-lg"
-                                        aria-hidden="true">
+
+                                <button ng-click="openEvent($index)" class="btn btn-primary btn-lg" aria-hidden="true">
                                     Open Event
                                 </button>
+
+                                <h3>QR Code:{{event.barcode}}</h3>
                             </div>
                         </div>
                     </div>
-                
+
                     <div ng-hide="questionsHidden">
                         <div class="row" ng-repeat="question in questions">
                             <div class="well well-lg">
-                                <p class="lead"><i class="fa fa-2x fa-user-circle-o" aria-hidden="true"></i> {{question.createdBy}}</p>
+                                <p class="lead">
+                                    <i class="fa fa-2x fa-user-circle-o" aria-hidden="true"></i> {{question.createdBy}}</p>
                                 <h1>{{question.questionText}}</h1>
-                                <button ng-click="like($index)"
-                                        class="fa fa-thumbs-o-up btn btn-primary btn-lg"
-                                        aria-hidden="true">
+                                <button ng-click="like($index)" class="fa fa-thumbs-o-up btn btn-primary btn-lg" aria-hidden="true">
                                     {{question.likeCount}}
                                 </button>
                             </div>
@@ -110,4 +111,5 @@
         </div>
     </div>
 </body>
+
 </html>

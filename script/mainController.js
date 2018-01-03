@@ -74,12 +74,14 @@
     function getPublicEvents() {
         //httprequest
 
-        var url = "http://localhost:64224/api/Event/Events";
+        var url = "https://townlyservice.azurewebsites.net/api/Event/Events";
 
+        var result = null;
 
-        //console.log("query: " + url + query);
         $http.get(url)
-            .then(function (response) { return response.data; });
+            .then(function (response) {                
+                $scope.events = response.data;
+            });
 
         //return [event1, event2, event3, event4, event5, event6];
     }
@@ -96,7 +98,7 @@
 
     $scope.simulateQuery = true;
     $scope.isDisabled = false;
-    
+
     $scope.states = loadAll();
     $scope.querySearch = querySearch;
     $scope.selectedItemChange = selectedItemChange;
