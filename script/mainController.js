@@ -24,14 +24,6 @@
         this.liked = liked
     }
 
-    function S4() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    }
-
-    function getGuid() {
-        return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-    }
-
     var event1 = new Event(13, "TestEvent1", "This is a test event", new Date().toDateString(), new Date().toDateString(), true, false, new Date().toDateString(), "xdj3x5yl3e8g23bhjudj4aw1j");
     var event2 = new Event(10, "TestEvent2", "This is a test event", new Date().toDateString(), new Date().toDateString(), true, false, new Date().toDateString(), "axadja3x5s2yl33a8gbd4aw1j");
     var event3 = new Event(17, "TestEvent3", "This is a test event", new Date().toDateString(), new Date().toDateString(), true, false, new Date().toDateString(), "rtxdj3x5yl3e8g54bdjj4aw1j");
@@ -49,6 +41,10 @@
 
     $scope.eventsHidden = false;
     $scope.questionsHidden = true;
+
+    $scope.itemList = [];
+    $scope.querySearch = querySearch;
+    $scope.selectedItemChange = selectedItemChange;
 
     $scope.openEvent = function (eventIndex) {
         $scope.eventsHidden = true;
@@ -72,18 +68,14 @@
     }
 
     function getPublicEvents() {
-        //httprequest
-
         var url = "https://townlyservice.azurewebsites.net/api/Event/Events";
 
-        var result = null;
-
         $http.get(url)
-            .then(function (response) {                
+            .then(function (response) {
+                debugger;
                 $scope.events = response.data;
+                $scope.itemList = getEventNames();
             });
-
-        //return [event1, event2, event3, event4, event5, event6];
     }
 
     function getQuestions(eventIndex) {
@@ -94,42 +86,17 @@
         $scope.questionsHidden = false;
     }
 
-    $scope.itemList = [{ value: event1, display: event1.name }, { value: event2, display: event2.name }, { value: event3, display: event3.name }, { value: event4, display: event4.name }, { value: event5, display: event5.name }, { value: event6, display: event6.name }];
-
-    $scope.simulateQuery = true;
-    $scope.isDisabled = false;
-
-    $scope.states = loadAll();
-    $scope.querySearch = querySearch;
-    $scope.selectedItemChange = selectedItemChange;
-    $scope.searchTextChange = searchTextChange;
-
-    $scope.newState = newState;
-
-    function newState(state) {
-        alert("Sorry! You'll need to create a Constitution for " + state + " first!");
-    }
-
-
     function querySearch(query) {
-        var results = query ? $scope.states.filter(createFilterFor(query)) : $scope.states,
-            deferred;
-        if ($scope.simulateQuery) {
-            deferred = $q.defer();
-
-            //Get servicecall
-            $timeout(function () {
-                deferred.resolve(results);
-            }, Math.random() * 1000, false);
-
-            return deferred.promise;
-        } else {
-            return results;
+        if (!query) {
+            return $scope.itemList;
         }
-    }
 
-    function searchTextChange(text) {
-        console.log('Text changed to ' + text);
+        query = angular.lowercase(query);
+
+        var selectedItemList = $scope.itemList.filter(function (item) {
+            return angular.lowercase(item.display).includes(query);
+        });
+        return selectedItemList;
     }
 
     function selectedItemChange(item) {
@@ -139,23 +106,13 @@
         console.log('Item changed to ' + JSON.stringify(item));
     }
 
-    function loadAll() {
-        var allStates = 'Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware,\
-              Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana,\
-              Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana,\
-              Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina,\
-              North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina,\
-              South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia,\
-              Wisconsin, Wyoming';
+    function getEventNames() {
+        $scope.itemList = [];
+
+        $scope.events.forEach(event => {
+            $scope.itemList.push({ value: event.eventId, display: event.name });
+        });
 
         return $scope.itemList;
-    }
-
-    function createFilterFor(query) {
-        var lowercaseQuery = angular.lowercase(query);
-
-        return function filterFn(state) {
-            return (state.value.indexOf(lowercaseQuery) === 0);
-        };
     }
 });
